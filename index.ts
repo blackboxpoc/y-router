@@ -40,7 +40,7 @@ export default {
       const bearerToken = request.headers.get("X-Api-Key") || 
         request.headers.get("Authorization")?.replace("Bearer ", "");
 
-      const baseUrl = env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1';
+      const baseUrl = env.OPENROUTER_BASE_URL || 'https://api.blackbox.ai';
       const openaiRequest = formatAnthropicToOpenAI(anthropicRequest, baseUrl);
       const openaiResponse = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",
