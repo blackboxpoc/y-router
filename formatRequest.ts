@@ -98,23 +98,24 @@ function validateOpenAIToolCalls(messages: any[]): any[] {
   return validatedMessages;
 }
 
-export function mapModel(anthropicModel: string): string {
-  // If model already contains '/', it's an OpenRouter model ID - return as-is
+export function mapModel(anthropicModel: string, baseUrl?: string): string {
   if (anthropicModel.includes('/')) {
     return anthropicModel;
   }
   
+  let mapped = anthropicModel;
   if (anthropicModel.includes('haiku')) {
-    return 'anthropic/claude-3.5-haiku';
+    mapped = 'anthropic/claude-3.5-haiku';
   } else if (anthropicModel.includes('sonnet')) {
-    return 'anthropic/claude-sonnet-4';
+    mapped = 'anthropic/claude-sonnet-4.5';
   } else if (anthropicModel.includes('opus')) {
-    return 'anthropic/claude-opus-4';
+    mapped = 'anthropic/claude-opus-4';
   }
-  return anthropicModel;
+  
+  return baseUrl?.includes('blackbox.ai') ? `blackboxai/${mapped}` : mapped;
 }
 
-export function formatAnthropicToOpenAI(body: MessageCreateParamsBase): any {
+export function formatAnthropicToOpenAI(body: MessageCreateParamsBase, baseUrl?: string): any {
   const { model, messages, system = [], temperature, tools, stream } = body;
 
   const openAIMessages = Array.isArray(messages)
@@ -223,7 +224,7 @@ export function formatAnthropicToOpenAI(body: MessageCreateParamsBase): any {
       }];
 
   const data: any = {
-    model: mapModel(model),
+    model: mapModel(model, baseUrl),
     messages: [...systemMessages, ...openAIMessages],
     temperature,
     stream,
