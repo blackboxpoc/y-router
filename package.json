@@ -2,6 +2,10 @@
   "name": "y-router",
   "version": "1.0.0",
   "main": "index.ts",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-fetch": "^3.3.2"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
