@@ -41,6 +41,7 @@ export default {
         request.headers.get("Authorization")?.replace("Bearer ", "");
 
       const baseUrl = env.OPENROUTER_BASE_URL || 'https://api.blackbox.ai';
+      console.log(anthropicRequest)
       const openaiRequest = formatAnthropicToOpenAI(anthropicRequest, baseUrl);
       const openaiResponse = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",
